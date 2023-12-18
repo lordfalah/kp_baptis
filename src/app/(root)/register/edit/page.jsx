@@ -2,6 +2,7 @@ import { getAuthSession } from "@/app/api/auth/[...nextauth]/route";
 import FormEdit from "../(form)/FormEdit";
 import { redirect } from "next/navigation";
 import Image from "next/image";
+import prisma from "@/app/libs/prisma";
 
 export const revalidate = 0;
 
