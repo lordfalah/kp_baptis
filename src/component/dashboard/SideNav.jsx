@@ -42,7 +42,7 @@ const SideNav = () => {
       <div className="">
         <div>
           <div className="h-19 p-6">
-            <div className="flex items-center gap-2.5">
+            <Link href={"/"} className="flex items-center gap-2.5">
               <Image
                 src="/image/logo/gsja.png"
                 alt="Logo"
@@ -57,7 +57,7 @@ const SideNav = () => {
               <span className="ml-1 font-semibold transition-all duration-200 ease-nav-brand">
                 GSJA
               </span>
-            </div>
+            </Link>
           </div>
           <hr className="h-px mt-0 mb-5 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent" />
         </div>

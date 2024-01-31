@@ -29,10 +29,7 @@ const Persyaratan = () => {
                   Telah menyatakan imannya kepada Yesus Kristus secara sukarela
                 </li>
                 <li>Mendapat persetujuan dari orang tua atau wali</li>
-                <li>
-                  Memiliki wali baptis yang telah dibaptis dan menerima sakrama
-                  Krisma
-                </li>
+                <li>Memiliki wali baptis yang telah dibaptis</li>
               </ul>
             </AccordionContent>
           </AccordionItem>
