@@ -10,27 +10,57 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Fomulir {
-  id            String       @id @default(cuid())
-  fullname      String       @db.VarChar(50)
-  kode_anggota  String       @db.VarChar(5)
-  no_hp         String       @db.VarChar(15)
-  tempat_lahir  String       @db.VarChar(15)
-  tanggal_lahir String       @db.VarChar(25)
-  name_baptis   String       @db.VarChar(50)
-  jenis_kelamin String       @db.VarChar(15)
-  alamat        String       @db.VarChar(100)
-  name_ayah     String       @db.VarChar(50)
-  name_ibu      String       @db.VarChar(50)
-  jenis_baptis  Jenis_Baptis
-  createdAt     DateTime     @default(now())
-  user          User         @relation(fields: [user_id], references: [id])
-  user_id       String       @unique
+model Calon_Baptis {
+  id                           String          @id @default(cuid())
+  nama_lengkap                 String          @db.VarChar(50)
+  jenis_kelamin                Jenis_Kelamin
+  tempat_lahir                 String          @db.VarChar(150)
+  jenis_baptis                 Jenis_Baptis
+  akte_lahir                   String          @db.VarChar(200) // url img
+  ktp                          String          @db.VarChar(200) // url img
+  surat_katekisasi             String          @db.VarChar(200) // url img
+  alamat_lengkap               String          @db.VarChar(225)
+  wilayah                      String?         @db.VarChar(80)
+  gereja_asal                  String?         @db.VarChar(100)
+  surat_keterangan_gereja_asal String?         @db.VarChar(200) // url img
+  keluarga                     Keluarga?
+  angkatanSlug                 String
+  angkatan                     Angkatan_Baptis @relation(fields: [angkatanSlug], references: [nama])
+  user                         User            @relation(fields: [userId], references: [id])
+  userId                       String          @unique
+}
+
+model Angkatan_Baptis {
+  id           String         @id @default(cuid())
+  nama         String         @unique @db.VarChar(40)
+  calon_baptis Calon_Baptis[]
 }
 
 enum Jenis_Baptis {
   ANAK
   DEWASA
+}
+
+model Keluarga {
+  id                String            @id @default(cuid())
+  nama_ayah         String            @db.VarChar(50)
+  nama_ibu          String            @db.VarChar(50)
+  agama_ayah        String            @db.VarChar(20)
+  agama_ibu         String            @db.VarChar(20)
+  calon_baptis      Calon_Baptis      @relation(fields: [calon_baptisID], references: [id])
+  calon_baptisID    String            @unique
+  kartu_keluarga    String            @db.VarChar(200) // url img
+  status_pernikahan Status_Pernikahan
+}
+
+enum Jenis_Kelamin {
+  PRIA
+  WANITA
+}
+
+enum Status_Pernikahan {
+  SUDAH
+  BELUM
 }
 
 model Account {
@@ -61,15 +91,20 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?       @unique
   emailVerified DateTime?
   image         String?
-  role          String?   @default("USER")
+  role          Role?         @default(USER)
   accounts      Account[]
   sessions      Session[]
-  formulir      Fomulir?
+  calon_baptis  Calon_Baptis?
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 model VerificationToken {

@@ -1,10 +1,10 @@
-import React from "react";
-import FormAdd from "./(form)/FormAdd";
+import React, { Fragment } from "react";
+import Image from "next/image";
+import HoverDevCards from "@/component/cards/HoverDevCards";
+import FormAnak from "./(baptis_anak)/Form";
+import FormDewasa from "./(baptis_dewasa)/Form";
 import prisma from "@/app/libs/prisma";
 import { getAuthSession } from "@/app/api/auth/[...nextauth]/route";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import Image from "next/image";
 
 export const revalidate = 0;
 
@@ -13,9 +13,9 @@ const userBaptis = async () => {
     const session = await getAuthSession();
     if (!session) return null;
 
-    const res = await prisma.fomulir.findUnique({
+    const res = await prisma.calon_Baptis.findUnique({
       where: {
-        user_id: session?.token?.id,
+        userId: session?.token?.id,
       },
     });
 
@@ -25,13 +25,25 @@ const userBaptis = async () => {
   }
 };
 
-const page = async () => {
-  const baptis = await userBaptis();
+const angkatanBaptis = async () => {
+  try {
+    const res = await prisma.angkatan_Baptis.findMany();
+    return res;
+  } catch (error) {
+    throw new Error(error.message || "");
+  }
+};
+
+const page = async ({ searchParams }) => {
+  const alreadyRegist = await userBaptis();
+  const angkatan = await angkatanBaptis();
+
+  let tipeBaptis = searchParams ? searchParams?.baptis : null;
 
   return (
     <section
       className={`lg:px-48 md:px-12 px-4 py-24 ${
-        baptis ? "min-h-screen" : "h-auto"
+        true ? "min-h-screen" : "h-auto"
       }`}
     >
       <div className="bg-white p-4 my-10 rounded-md">
@@ -62,21 +74,22 @@ const page = async () => {
         <hr className="border-1.5 border-black" />
       </div>
 
-      {baptis ? (
+      {!tipeBaptis && <HoverDevCards />}
+
+      {alreadyRegist && tipeBaptis ? (
         <div className="flex flex-col items-center gap-4">
           <div className="text-center">
             <h2 className="text-3xl font-semibold text-slate-800 drop-shadow-sm">
               You are already registed
             </h2>
-            <p className="text-muted-foreground drop-shadow">Wanna Update ?</p>
+            <p className="text-muted-foreground drop-shadow">Just wait</p>
           </div>
-
-          <Button asChild className="w-fit">
-            <Link href="/register/edit">Update</Link>
-          </Button>
         </div>
       ) : (
-        <FormAdd />
+        <Fragment>
+          {tipeBaptis === "dewasa" && <FormDewasa angkatan={angkatan} />}
+          {tipeBaptis === "anak" && <FormAnak />}
+        </Fragment>
       )}
     </section>
   );

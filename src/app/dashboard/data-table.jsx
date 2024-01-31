@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Fragment, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import Search from "@/assets/icon/Search";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import ChevronRightDouble from "@/assets/icon/ChevronRightDouble";
@@ -34,18 +34,22 @@ import ChevronLeftDouble from "@/assets/icon/ChevronLeftDouble";
 import { columnsBaptis } from "./columns";
 import { clientApi } from "@/utils/actions/clientApi";
 import { useQuery } from "@tanstack/react-query";
+import { getUsers } from "./page";
+import Print from "@/assets/icon/Print";
+import ReactToPrint from "react-to-print";
 
 function DataTable() {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
+  let myTable = useRef(null);
 
   const { data } = useQuery({
-    queryKey: ["formulir_user"],
-    queryFn: clientApi.formulirBaptisUsers,
+    queryKey: ["calon_baptis"],
+    queryFn: getUsers,
   });
 
   const table = useReactTable({
-    data,
+    data: data?.data,
     columns: columnsBaptis,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -61,6 +65,14 @@ function DataTable() {
 
   return (
     <Fragment>
+      <style type="text/css" media="print">
+        {
+          "\
+            @page { size: landscape; }\
+            "
+        }
+      </style>
+
       <div className="bg-white p-4 sm:p-6 grid grid-cols-6 gap-x-4 flex-wrap rounded-lg items-center mt-4">
         <div className="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease col-span-4">
           <span className="text-sm ease leading-5.6 absolute z-30 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
@@ -70,18 +82,27 @@ function DataTable() {
             type="text"
             className="pl-9 text-sm focus:shadow-primary-outline ease w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:transition-shadow"
             placeholder="Type here..."
-            value={table.getColumn("fullname")?.getFilterValue() ?? ""}
+            value={table.getColumn("name")?.getFilterValue() ?? ""}
             onChange={(event) =>
-              table.getColumn("fullname")?.setFilterValue(event.target.value)
+              table.getColumn("name")?.setFilterValue(event.target.value)
             }
           />
         </div>
-        <div className="col-span-2 justify-self-end items-center">
-          <span>List User</span>
+        <div className="col-span-2 justify-self-end flex">
+          <ReactToPrint
+            documentTitle="Resume Kedai Niaga"
+            bodyClass="print-agreement"
+            content={() => myTable.current}
+            trigger={() => (
+              <button type="button" className="group transition-all">
+                <Print className="w-9 h-9 cursor-pointer transition-all stroke-red-400 drop-shadow-md group-hover:stroke-red-500 group-hover:drop-shadow-lg" />
+              </button>
+            )}
+          />
         </div>
       </div>
 
-      <div className="rounded-md border bg-white my-6">
+      <div className="rounded-md border bg-white my-6" ref={myTable}>
         <Table className="w-[700px] sm:w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
