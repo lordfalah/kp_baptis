@@ -60,6 +60,11 @@ model History_Calon_Baptis {
   history Json
 }
 
+model Upload_Surat_Baptis {
+  id           String  @id @default(cuid())
+  surat_baptis String? @db.VarChar(200) // url img
+}
+
 enum Jenis_Kelamin {
   PRIA
   WANITA

@@ -32,20 +32,23 @@ import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import ChevronRightDouble from "@/assets/icon/ChevronRightDouble";
 import ChevronLeftDouble from "@/assets/icon/ChevronLeftDouble";
 import { columnsBaptis } from "./columns";
-import { clientApi } from "@/utils/actions/clientApi";
 import { useQuery } from "@tanstack/react-query";
 import Print from "@/assets/icon/Print";
 import ReactToPrint from "react-to-print";
-import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { getUsers } from "../page";
+import { useEdgeStore } from "@/app/libs/edgestore";
 
 function DataTable() {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   let myTable = useRef(null);
+  const { edgestore } = useEdgeStore();
 
   const { data } = useQuery({
     queryKey: ["calon_baptis"],
-    queryFn: clientApi.getUsers,
+    queryFn: getUsers,
   });
 
   const table = useReactTable({
@@ -89,7 +92,31 @@ function DataTable() {
           />
         </div>
         <div className="col-span-2 justify-self-end flex gap-x-6">
-          <Button>Upload Surat Baptis</Button>
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <Label htmlFor="surat_baptis">Upload Surat Baptis</Label>
+            <Input
+              id="surat_baptis"
+              type="file"
+              required
+              onChange={async (e) => {
+                try {
+                  const res = await edgestore.publicFiles.upload({
+                    file: e.target.files?.[0],
+                  });
+                  const upload_surat = await fetch(
+                    "/api/baptis/surat_upload/",
+                    {
+                      method: "POST",
+                      body: JSON.stringify({ surat_upload_baptis: res?.url }),
+                    }
+                  );
+                } catch (error) {
+                  console.log(error);
+                }
+              }}
+            />
+          </div>
+
           <ReactToPrint
             documentTitle="Resume Kedai Niaga"
             bodyClass="print-agreement"

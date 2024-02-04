@@ -7,7 +7,7 @@ export async function GET() {
 
     return NextResponse.json({ data: res }, { status: 200 });
   } catch (error) {
-    throw new Error(error.message || "");
+    return NextResponse.json({ message: error.message || "" }, { status: 500 });
   }
 }
 
