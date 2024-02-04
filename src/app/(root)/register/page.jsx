@@ -26,19 +26,33 @@ const userBaptis = async () => {
   }
 };
 
-const angkatanBaptis = async () => {
+const getAngkatans = async () => {
   try {
-    const res = await prisma.angkatan_Baptis.findMany();
+    const req = await fetch(
+      `${process.env.NEXT_PUBLIC_URL_PAGE}/api/baptis/angkatan`,
+      {
+        method: "GET",
+        cache: "no-store",
+      }
+    );
+    const res = await req.json();
     return res;
   } catch (error) {
-    throw new Error(error.message || "");
+    throw new Error(error.message || "INTERNAL SERVER ERROR");
   }
 };
 
 const page = async ({ searchParams }) => {
   const alreadyRegist = await userBaptis();
 
-  const angkatan = await angkatanBaptis();
+  const angkatan = await getAngkatans();
+  const change_angkatan = angkatan.data.map((item) => {
+    const newAngkatan = item.nama.charAt(0).toUpperCase() + item.nama.slice(1);
+    return {
+      value: item.nama,
+      label: newAngkatan,
+    };
+  });
 
   let tipeBaptis = searchParams ? searchParams?.baptis : null;
 
@@ -89,8 +103,12 @@ const page = async ({ searchParams }) => {
         </div>
       ) : (
         <Fragment>
-          {tipeBaptis === "dewasa" && <FormDewasa tipeBaptis={tipeBaptis} />}
-          {tipeBaptis === "anak" && <FormAnak tipeBaptis={tipeBaptis} />}
+          {tipeBaptis === "dewasa" && (
+            <FormDewasa tipeBaptis={tipeBaptis} angkatan={change_angkatan} />
+          )}
+          {tipeBaptis === "anak" && (
+            <FormAnak tipeBaptis={tipeBaptis} angkatan={change_angkatan} />
+          )}
         </Fragment>
       )}
     </section>

@@ -35,7 +35,7 @@ export function Dropdown({ datas, name }) {
           className="w-full justify-between"
         >
           {value
-            ? datas.find((data) => data.value === value)?.label
+            ? datas?.find((data) => data.value === value)?.label
             : `Select ${name}...`}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -45,7 +45,7 @@ export function Dropdown({ datas, name }) {
           <CommandInput placeholder={`Search ${name}...`} />
           <CommandEmpty>No {name} found.</CommandEmpty>
           <CommandGroup>
-            {datas.map((data) => (
+            {datas?.map((data) => (
               <CommandItem
                 key={data.value}
                 value={data.value}
