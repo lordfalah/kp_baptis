@@ -11,6 +11,7 @@ export const revalidate = 0;
 const userBaptis = async () => {
   try {
     const session = await getAuthSession();
+
     if (!session) return null;
 
     const res = await prisma.calon_Baptis.findUnique({
@@ -36,6 +37,7 @@ const angkatanBaptis = async () => {
 
 const page = async ({ searchParams }) => {
   const alreadyRegist = await userBaptis();
+
   const angkatan = await angkatanBaptis();
 
   let tipeBaptis = searchParams ? searchParams?.baptis : null;
@@ -87,8 +89,8 @@ const page = async ({ searchParams }) => {
         </div>
       ) : (
         <Fragment>
-          {tipeBaptis === "dewasa" && <FormDewasa angkatan={angkatan} />}
-          {tipeBaptis === "anak" && <FormAnak />}
+          {tipeBaptis === "dewasa" && <FormDewasa tipeBaptis={tipeBaptis} />}
+          {tipeBaptis === "anak" && <FormAnak tipeBaptis={tipeBaptis} />}
         </Fragment>
       )}
     </section>

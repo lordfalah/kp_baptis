@@ -19,7 +19,8 @@ model Calon_Baptis {
   jenis_baptis                 Jenis_Baptis
   akte_lahir                   String          @db.VarChar(200) // url img
   ktp                          String          @db.VarChar(200) // url img
-  surat_katekisasi             String          @db.VarChar(200) // url img
+  surat_katekisasi             String?         @db.VarChar(200) // url img
+  surat_pembekalan_ortu        String?         @db.VarChar(200) // url img
   alamat_lengkap               String          @db.VarChar(225)
   wilayah                      String?         @db.VarChar(80)
   gereja_asal                  String?         @db.VarChar(100)
@@ -48,10 +49,15 @@ model Keluarga {
   nama_ibu          String            @db.VarChar(50)
   agama_ayah        String            @db.VarChar(20)
   agama_ibu         String            @db.VarChar(20)
-  calon_baptis      Calon_Baptis      @relation(fields: [calon_baptisID], references: [id])
+  calon_baptis      Calon_Baptis      @relation(fields: [calon_baptisID], references: [id], onDelete: Cascade)
   calon_baptisID    String            @unique
   kartu_keluarga    String            @db.VarChar(200) // url img
   status_pernikahan Status_Pernikahan
+}
+
+model History_Calon_Baptis {
+  id      String @id @default(cuid())
+  history Json
 }
 
 enum Jenis_Kelamin {

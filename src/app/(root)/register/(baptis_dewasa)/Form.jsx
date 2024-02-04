@@ -1,73 +1,78 @@
 "use client";
 
 import { useFormBaptis } from "@/app/context/FormBaptis";
-import Angkatan from "@/component/Angkatan";
-import CalonBaptis from "../(form)/CalonBaptis";
-import { Button } from "@/components/ui/button";
-import Keluarga from "./Keluarga";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import { useState } from "react";
+import FormBaptis from "../(form)/FormBaptis";
 
-const angkatan = [
-  {
-    value: "februari 2024",
-    label: "Februari 2024",
-  },
-  {
-    value: "maret 2024",
-    label: "Maret 2024",
-  },
-];
-
-const FormDewasa = () => {
+const FormDewasa = ({ tipeBaptis, angkatan }) => {
   const { form } = useFormBaptis();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const disabledSubmit = Boolean(
+    form.angkatan &&
+      form.calon_baptis.akte_lahir &&
+      form.calon_baptis.alamat_lengkap &&
+      form.calon_baptis.jenis_kelamin &&
+      form.calon_baptis.ktp &&
+      form.calon_baptis.nama_lengkap &&
+      form.calon_baptis.tanggal_lahir &&
+      form.calon_baptis.tempat_lahir &&
+      form.keluarga.agama_ayah &&
+      form.keluarga.agama_ibu &&
+      form.keluarga.kartu_keluarga &&
+      form.keluarga.nama_ayah &&
+      form.keluarga.nama_ibu &&
+      form.keluarga.status_pernikahan
+  );
 
   const handleForm = async (e) => {
     e.preventDefault();
     try {
-      const req = await fetch("/api/baptis_dewasa", {
+      setIsLoading(true);
+      const req = await fetch("/api/baptis", {
         method: "POST",
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          calon_baptis: {
+            ...form.calon_baptis,
+            jenis_baptis: tipeBaptis.toUpperCase(),
+          },
+        }),
       });
+
       const res = await req.json();
+      if (!req.ok) throw new Error(res?.message);
       toast({
         variant: "success",
         title: "Success",
-        description: "Data Product berhasil di tambah",
+        description: "Berhasil melakukan registrasi",
       });
       router.refresh();
     } catch (error) {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
-        description: error?.message || "There was a problem with your request.",
+        description: error?.message || "Gagal melakukan registrasi",
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <main className="space-y-20">
-      <form className="space-y-20" onSubmit={handleForm}>
-        {/* Bagian 1 */}
-        <Angkatan name={"Angkatan"} datas={angkatan} />
-
-        {/* bagian 2 */}
-        <CalonBaptis />
-
-        {/* bagian 3 */}
-        <Keluarga />
-
-        <Button
-          className="w-full bg-black text-white font-semibold "
-          type="submit"
-        >
-          Daftar
-        </Button>
-      </form>
-    </main>
+    <FormBaptis
+      angkatan={angkatan}
+      title={"Dewasa"}
+      form={form}
+      isLoading={isLoading}
+      disabledSubmit={disabledSubmit}
+      handleForm={handleForm}
+    />
   );
 };
 

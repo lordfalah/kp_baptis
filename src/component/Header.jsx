@@ -8,8 +8,8 @@ const Header = async () => {
   const session = await getAuthSession();
 
   return (
-    <nav className="fixed flex justify-between py-4 sm:py-6 w-full lg:px-48 md:px-12 px-4 content-center bg-secondary z-10">
-      <div className="flex items-center">
+    <nav className="fixed flex justify-between py-4 sm:py-6 w-full lg:px-48 md:px-12 px-4 content-center bg-secondary z-50">
+      <Link href={"/"} className="flex items-center">
         <Image
           src="/image/logo/gsja.png"
           alt="Logo"
@@ -21,7 +21,7 @@ const Header = async () => {
             objectFit: "cover",
           }}
         />
-      </div>
+      </Link>
       <ul className="font-montserrat items-center hidden md:flex">
         {session && session?.token?.role === "USER" && (
           <li className="mx-3 ">

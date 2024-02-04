@@ -1,14 +1,18 @@
 import Header from "@/component/dashboard/Header";
-import DataTable from "./(tables_root)/data-table";
+
 import getQueryClient from "@/utils/query/getQueryClient";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import DataTableHistory from "./(tables)/data-table";
 
-export const getUsers = async () => {
+export const getHistoryCalonBaptis = async () => {
   try {
-    const req = await fetch(`${process.env.NEXT_PUBLIC_URL_PAGE}/api/baptis`, {
-      method: "GET",
-      cache: "no-store",
-    });
+    const req = await fetch(
+      `${process.env.NEXT_PUBLIC_URL_PAGE}/api/baptis/history`,
+      {
+        method: "GET",
+        cache: "no-store",
+      }
+    );
     const res = await req.json();
     return res;
   } catch (error) {
@@ -21,8 +25,8 @@ export default async function page() {
   const queryClient = getQueryClient();
 
   await queryClient.fetchQuery({
-    queryKey: ["calon_baptis"],
-    queryFn: getUsers,
+    queryKey: ["history_calon_baptis"],
+    queryFn: getHistoryCalonBaptis,
   });
 
   return (
@@ -31,7 +35,7 @@ export default async function page() {
         <Header />
 
         <HydrationBoundary state={dehydrate(queryClient)}>
-          <DataTable />
+          <DataTableHistory />
         </HydrationBoundary>
       </div>
     </main>

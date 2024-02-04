@@ -18,15 +18,12 @@ const Keluarga = () => {
         </p>
       </div>
 
-      <aside className="flex justify-between">
+      <aside className="flex justify-between gap-y-8 flex-col lg:flex-row lg:gap-0">
         <div className="space-y-8 basis-2/5">
           {/* nama ayah */}
           <div>
-            <Label
-              htmlFor="name"
-              className="basis-2/5 relative after:content-[''] sm:after:content-[':'] after:absolute after:right-0"
-            >
-              Nama Ayah
+            <Label htmlFor="nama_ayah" className="space-x-1.5">
+              <span>Nama Ayah</span>
               <span className="text-sm italic text-muted-foreground">
                 Wajib Diisi
               </span>
@@ -34,9 +31,9 @@ const Keluarga = () => {
             <Input
               required
               type="text"
-              id="name"
-              name="name"
-              placeholder="nama.."
+              id="nama_ayah"
+              name="nama_ayah"
+              placeholder="nama..."
               className="basis-auto"
               onChange={(e) =>
                 setForm((prev) => ({
@@ -52,11 +49,8 @@ const Keluarga = () => {
 
           {/* nama ibu */}
           <div>
-            <Label
-              htmlFor="name"
-              className="basis-2/5 relative after:content-[''] sm:after:content-[':'] after:absolute after:right-0"
-            >
-              Nama Ibu
+            <Label htmlFor="nama_ibu" className="space-x-1.5">
+              <span>Nama Ibu</span>
               <span className="text-sm italic text-muted-foreground">
                 Wajib Diisi
               </span>
@@ -64,8 +58,8 @@ const Keluarga = () => {
             <Input
               required
               type="text"
-              id="name"
-              name="name"
+              id="nama_ibu"
+              name="nama_ibu"
               placeholder="nama.."
               className="basis-auto"
               onChange={(e) =>
@@ -82,11 +76,8 @@ const Keluarga = () => {
 
           {/* agama ayah */}
           <div>
-            <Label
-              htmlFor="name"
-              className="basis-2/5 relative after:content-[''] sm:after:content-[':'] after:absolute after:right-0"
-            >
-              agama ayah
+            <Label htmlFor="agama_ayah" className="space-x-1.5">
+              <span>agama ayah</span>
               <span className="text-sm italic text-muted-foreground">
                 Wajib Diisi
               </span>
@@ -94,8 +85,8 @@ const Keluarga = () => {
             <Input
               required
               type="text"
-              id="name"
-              name="name"
+              id="agama_ayah"
+              name="agama_ayah"
               placeholder="agama.."
               className="basis-auto"
               onChange={(e) =>
@@ -114,11 +105,8 @@ const Keluarga = () => {
         <div className="space-y-8 basis-2/5">
           {/* agama Ibu */}
           <div>
-            <Label
-              htmlFor="name"
-              className="basis-2/5 relative after:content-[''] sm:after:content-[':'] after:absolute after:right-0"
-            >
-              agama Ibu
+            <Label htmlFor="agama_ibu" className="space-x-1.5">
+              <span>agama Ibu</span>
               <span className="text-sm italic text-muted-foreground">
                 Wajib Diisi
               </span>
@@ -126,8 +114,8 @@ const Keluarga = () => {
             <Input
               required
               type="text"
-              id="name"
-              name="name"
+              id="agama_ibu"
+              name="agama_ibu"
               placeholder="agama.."
               className="basis-auto"
               onChange={(e) =>
@@ -144,11 +132,8 @@ const Keluarga = () => {
 
           {/* kk */}
           <div>
-            <Label
-              htmlFor="name"
-              className="basis-2/5 relative after:content-[''] sm:after:content-[':'] after:absolute after:right-0"
-            >
-              Kartu Keluarga
+            <Label htmlFor="kk" className="space-x-1.5">
+              <span>Kartu Keluarga</span>
               <span className="text-sm italic text-muted-foreground">
                 Wajib Diisi
               </span>
@@ -156,6 +141,8 @@ const Keluarga = () => {
             <Input
               required
               type="file"
+              id="kk"
+              name="kk"
               className="basis-auto"
               onChange={async (e) => {
                 try {
@@ -180,38 +167,37 @@ const Keluarga = () => {
           </div>
 
           <div>
-            <Label
-              htmlFor="name"
-              className="basis-2/5 relative after:content-[''] sm:after:content-[':'] after:absolute after:right-0"
-            >
-              Status Pernikahan
+            <Label htmlFor="status_pernikahan" className="space-x-1.5">
+              <span>Status Pernikahan</span>
               <span className="text-sm italic text-muted-foreground">
                 Wajib Diisi
               </span>
             </Label>
 
-            <RadioGroup
-              className="flex gap-x-6"
-              defaultValue="option-one"
-              onValueChange={(e) =>
-                setForm((prev) => ({
-                  ...prev,
-                  keluarga: {
-                    ...prev.keluarga,
-                    status_pernikahan: e,
-                  },
-                }))
-              }
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="SUDAH" id="sudah" />
-                <Label htmlFor="sudah">Sudah</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="BELUM" id="belum" />
-                <Label htmlFor="belum">Belum</Label>
-              </div>
-            </RadioGroup>
+            <div className="w-full py-3.5 px-3.5 bg-white rounded-md shadow-sm">
+              <RadioGroup
+                className="flex gap-x-6"
+                defaultValue="option-one"
+                onValueChange={(e) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    keluarga: {
+                      ...prev.keluarga,
+                      status_pernikahan: e,
+                    },
+                  }))
+                }
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="SUDAH" id="sudah" />
+                  <Label htmlFor="sudah">Sudah</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="BELUM" id="belum" />
+                  <Label htmlFor="belum">Belum</Label>
+                </div>
+              </RadioGroup>
+            </div>
           </div>
         </div>
       </aside>

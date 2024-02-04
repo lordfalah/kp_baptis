@@ -5,6 +5,7 @@ export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
   async function middleware(req) {
     const token = req.nextauth.token;
+    // console.log(req);
 
     // access dashboard just role ADMIN and SUPER ADMIN
     if (req.nextUrl.pathname.startsWith("/dashboard")) {

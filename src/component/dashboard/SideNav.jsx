@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { TableProperties } from "lucide-react";
 import Monitor from "@/assets/icon/Monitor";
 import Link from "next/link";
 import React, { useContext, useEffect, useRef } from "react";
@@ -13,6 +14,17 @@ export const nav_link = {
       name: "Dashboard",
       path: "/dashboard",
       icon: <Monitor className="w-5 h-5 stroke-blue-500/90" />,
+    },
+    {
+      name: "History",
+      path: "/dashboard/history",
+      icon: <TableProperties className="w-5 h-5 stroke-blue-500/90" />,
+    },
+
+    {
+      name: "Calon Baptis",
+      path: "/dashboard/calon_baptis",
+      icon: <TableProperties className="w-5 h-5 stroke-blue-500/90" />,
     },
   ],
 };

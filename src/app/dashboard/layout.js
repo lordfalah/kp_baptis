@@ -12,7 +12,7 @@ const DashboardLayout = ({ children }) => {
           <div className="xl:max-w-[280px] w-full"></div>
           <Providers>
             {children}
-            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+            <ReactQueryDevtools initialIsOpen={false} />
           </Providers>
         </div>
       </NavigateOpen>

@@ -8,6 +8,7 @@ const FormContext = createContext();
 const FormBaptisProvider = ({ children }) => {
   const [form, setForm] = useState({
     angkatan: "",
+    paroki: "MKK",
     calon_baptis: {
       nama_lengkap: "",
       jenis_kelamin: "",
@@ -16,6 +17,7 @@ const FormBaptisProvider = ({ children }) => {
       akte_lahir: "",
       ktp: "",
       surat_katekisasi: "",
+      surat_pembekalan_ortu: "",
       wilayah: "",
       alamat_lengkap: "",
     },

@@ -6,7 +6,7 @@ const HoverDevCards = () => {
   return (
     <div className="p-4">
       <p className="text-xl font-semibold mb-2">Pilih Baptis</p>
-      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 grid-cols-2">
         <Card
           title="Baptis Dewasa"
           subtitle=""
@@ -19,13 +19,6 @@ const HoverDevCards = () => {
           href={{ query: { baptis: "anak" } }}
           Icon={FiMail}
         />
-        {/* <Card title="Team" subtitle="Manage team" href="#" Icon={FiUsers} />
-        <Card
-          title="Billing"
-          subtitle="Manage cards"
-          href="#"
-          Icon={FiCreditCard}
-        /> */}
       </div>
     </div>
   );

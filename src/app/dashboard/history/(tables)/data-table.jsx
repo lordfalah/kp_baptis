@@ -31,26 +31,27 @@ import Search from "@/assets/icon/Search";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import ChevronRightDouble from "@/assets/icon/ChevronRightDouble";
 import ChevronLeftDouble from "@/assets/icon/ChevronLeftDouble";
-import { columnsBaptis } from "./columns";
+
 import { clientApi } from "@/utils/actions/clientApi";
 import { useQuery } from "@tanstack/react-query";
-import { getUsers } from "./page";
 import Print from "@/assets/icon/Print";
 import ReactToPrint from "react-to-print";
+import { getHistoryCalonBaptis } from "../page";
+import { columnsHistoryBaptis } from "./columns";
 
-function DataTable() {
+function DataTableHistory() {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   let myTable = useRef(null);
 
-  const { data } = useQuery({
-    queryKey: ["calon_baptis"],
-    queryFn: getUsers,
+  const { data: calon_history } = useQuery({
+    queryKey: ["history_calon_baptis"],
+    queryFn: getHistoryCalonBaptis,
   });
 
   const table = useReactTable({
-    data: data?.data,
-    columns: columnsBaptis,
+    data: calon_history?.data,
+    columns: columnsHistoryBaptis,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -82,9 +83,11 @@ function DataTable() {
             type="text"
             className="pl-9 text-sm focus:shadow-primary-outline ease w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:transition-shadow"
             placeholder="Type here..."
-            value={table.getColumn("name")?.getFilterValue() ?? ""}
+            value={table.getColumn("nama_lengkap")?.getFilterValue() ?? ""}
             onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
+              table
+                .getColumn("nama_lengkap")
+                ?.setFilterValue(event.target.value)
             }
           />
         </div>
@@ -142,7 +145,7 @@ function DataTable() {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columnsBaptis.length}
+                  colSpan={columnsHistoryBaptis.length}
                   className="h-24 text-center"
                 >
                   No results.
@@ -243,4 +246,4 @@ function DataTable() {
   );
 }
 
-export default DataTable;
+export default DataTableHistory;

@@ -72,6 +72,7 @@ const Login = () => {
               style={{
                 objectFit: "cover",
               }}
+              alt="logo Google"
             />
             <span className="font-medium text-lg text-white">Google</span>
           </button>

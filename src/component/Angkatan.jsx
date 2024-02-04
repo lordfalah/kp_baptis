@@ -1,7 +1,4 @@
-import { Dropdown } from "@/component/Dropdown";
-import React from "react";
-
-const Angkatan = ({ datas, name }) => {
+const Angkatan = ({ children }) => {
   return (
     <div className="space-y-12">
       <div className="space-y-2">
@@ -13,11 +10,11 @@ const Angkatan = ({ datas, name }) => {
 
       <div>
         <p className="text-sm">
-          <span>Angkatan</span>{" "}
+          <span>Angkatan</span>
           <span className="text-muted-foreground italic">Wajib Disi</span>
         </p>
 
-        <Dropdown datas={datas} name={name} />
+        {children}
       </div>
     </div>
   );
